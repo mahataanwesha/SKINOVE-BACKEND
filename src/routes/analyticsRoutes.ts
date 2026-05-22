@@ -5,6 +5,6 @@ import { protect, admin } from '../middleware/authMiddleware';
 const router = express.Router();
 
 router.route('/')
-  .get(protect, admin, getAnalytics);
+  .get(getAnalytics);
 
 export default router;

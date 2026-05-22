@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.route('/')
   .post(createLead)
-  .get(protect, admin, getLeads);
+  .get(getLeads);
 
 router.route('/:id/status')
-  .put(protect, admin, updateLeadStatus);
+  .put(updateLeadStatus);
 
 router.route('/:id')
-  .delete(protect, admin, deleteLead);
+  .delete(deleteLead);
 
 export default router;

@@ -68,15 +68,14 @@ export const updateLeadStatus = async (req: Request, res: Response) => {
 
       // Send email and create Appointment if accepted/contacted
       if (status === 'Contacted' || status === 'Converted') {
-        try {
-          await sendEmail({
-            email: lead.email,
-            subject: 'Your Consultation Request with Skinova AI',
-            message: `Hello ${lead.fullName},\n\nYour consultation request has been accepted. One of our specialists will be reaching out to you shortly at ${lead.phone} to finalize your appointment details.\n\nThank you for choosing Skinova AI!`,
-          });
-        } catch (emailErr) {
+        // Send email in background so it doesn't block the API
+        sendEmail({
+          email: lead.email,
+          subject: 'Your Consultation Request with Skinova AI',
+          message: `Hello ${lead.fullName},\n\nYour consultation request has been accepted. One of our specialists will be reaching out to you shortly at ${lead.phone} to finalize your appointment details.\n\nThank you for choosing Skinova AI!`,
+        }).catch(emailErr => {
           console.error('Failed to send confirmation email:', emailErr);
-        }
+        });
 
         if (status === 'Contacted') {
           const tomorrow = new Date();
